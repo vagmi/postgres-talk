@@ -1,0 +1,21 @@
+[package]
+name = "postgres-talk"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+name = "pivot_table"
+path = "src/pivot_table/main.rs"
+
+[[bin]]
+name = "postgres-talk"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1.0.69"
+chrono = {version="0.4.23", features=["clock", "serde"]}
+clap = "4.1.4"
+serde = {version="1.0.152", features=["derive"]}
+sqlx = {version="0.6.2", features=["postgres", "runtime-tokio-rustls", "uuid", "chrono", "json"]}
+tokio = {version="1.25.0", features=["full"]}
