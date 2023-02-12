@@ -1,5 +1,5 @@
 use anyhow::Result;
-use fake::{Fake, faker::lorem::en::Words, locales::EN, faker::chrono::raw::{DateTime as FakeDateTime, DateTimeBefore, DateTimeAfter, DateTimeBetween}};
+use fake::{Fake, faker::lorem::en::Words, locales::EN, faker::chrono::raw::DateTimeBetween};
 use postgres_talk::utils::{run_structure, reset_database, establish_connection};
 use chrono::{DateTime, Utc, Days};
 use sqlx::PgPool;
