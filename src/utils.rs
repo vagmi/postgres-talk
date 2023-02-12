@@ -1,4 +1,4 @@
-use sqlx::{postgres::PgPoolOptions, PgPool};
+use sqlx::{postgres::PgPoolOptions, PgPool, Executor};
 use tokio::process::Command;
 use anyhow::{Result, bail};
 
@@ -29,7 +29,9 @@ pub async fn reset_database(db_name: &str) -> Result<()> {
 
 pub async fn run_structure(db_name: &str, sql: &str) -> Result<()> {
     let pool = PgPoolOptions::new().connect(format!("postgres:///{}?sslmode=disable", db_name).as_str()).await?;
-    sqlx::query(sql).execute(&pool).await?;
+    let mut tx = pool.begin().await?;
+    tx.execute(sql).await?;
+    tx.commit().await?;
     Ok(())
 }
 

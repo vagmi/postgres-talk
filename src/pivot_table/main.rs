@@ -4,7 +4,7 @@ use postgres_talk::utils::{run_structure, reset_database, establish_connection};
 use chrono::{DateTime, Utc, Days};
 use sqlx::PgPool;
 
-const STRUCTURE_SQL: &'static str = include_str!("./structure.sql");
+const STRUCTURE_SQL: &'static str = include_str!("./sql/structure.sql");
 
 async fn seed(pool: PgPool) -> Result<()> {
     let mut tx = pool.begin().await?;
