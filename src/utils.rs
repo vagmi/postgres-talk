@@ -1,4 +1,4 @@
-use sqlx::postgres::PgPoolOptions;
+use sqlx::{postgres::PgPoolOptions, PgPool};
 use tokio::process::Command;
 use anyhow::{Result, bail};
 
@@ -31,4 +31,9 @@ pub async fn run_structure(db_name: &str, sql: &str) -> Result<()> {
     let pool = PgPoolOptions::new().connect(format!("postgres:///{}?sslmode=disable", db_name).as_str()).await?;
     sqlx::query(sql).execute(&pool).await?;
     Ok(())
+}
+
+pub async fn establish_connection(db_name: &str) -> Result<PgPool> {
+    let pool = PgPoolOptions::new().connect(format!("postgres:///{}?sslmode=disable", db_name).as_str()).await?;
+    Ok(pool)
 }

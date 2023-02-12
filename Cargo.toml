@@ -16,6 +16,7 @@ path = "src/main.rs"
 anyhow = "1.0.69"
 chrono = {version="0.4.23", features=["clock", "serde"]}
 clap = "4.1.4"
+fake = {version="2.5.0", features=["derive", "chrono"]}
 serde = {version="1.0.152", features=["derive"]}
 sqlx = {version="0.6.2", features=["postgres", "runtime-tokio-rustls", "uuid", "chrono", "json"]}
 tokio = {version="1.25.0", features=["full"]}
