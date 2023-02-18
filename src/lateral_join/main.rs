@@ -63,7 +63,7 @@ implement_save!(PaidUserEvent);
 
 async fn seed(pool: PgPool) -> Result<()> {
     let mut tx = pool.begin().await?;
-    for _ in 0..10_0000 {
+    for _ in 0..100_000 {
         let visitor_id = Uuid::new_v4();
         let end_dt: DateTime<Utc> = Utc::now();
         let start_dt : DateTime<Utc> = end_dt.checked_sub_days(Days::new(365)).ok_or(anyhow!("unable to sub days"))?;
