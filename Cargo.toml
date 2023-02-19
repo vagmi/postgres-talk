@@ -13,6 +13,10 @@ name = "lateral_join"
 path = "src/lateral_join/main.rs"
 
 [[bin]]
+name = "window_functions"
+path = "src/window_functions/main.rs"
+
+[[bin]]
 name = "postgres-talk"
 path = "src/main.rs"
 
@@ -22,7 +26,9 @@ async-trait = "0.1.64"
 chrono = {version="0.4.23", features=["clock", "serde"]}
 clap = "4.1.4"
 fake = {version="2.5.0", features=["derive", "chrono"]}
+lazy_static = "1.4.0"
 rand = "0.8.5"
+rand_distr = "0.4.3"
 serde = {version="1.0.152", features=["derive"]}
 serde_json = "1.0.93"
 sqlx = {version="0.6.2", features=["postgres", "runtime-tokio-rustls", "uuid", "chrono", "json"]}
