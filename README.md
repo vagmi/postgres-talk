@@ -7,5 +7,5 @@ of the awesome capabilities of PostgreSQL in real world scenarios.
 * [x] Table Func
 * [x] Window functions
 * [x] JSON operations
-* [ ] Full text search queries
+* [x] Full text search queries
 * [ ] Row level security
