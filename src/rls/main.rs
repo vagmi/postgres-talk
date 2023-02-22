@@ -1,20 +1,16 @@
 use std::net::SocketAddr;
-use axum::{Router, routing::get, http::{HeaderMap, StatusCode, HeaderName}, extract::State, Server, Json};
+use axum::{Router, routing::{get, post}, Server};
 use fake::{Fake, faker::{internet::en::Username, lorem::en::Words}};
 use postgres_talk::utils::{reset_database, run_structure, establish_connection};
+use sqlx::PgPool;
 use anyhow::Result;
-use serde::{Serialize, Deserialize};
-use sqlx::{PgPool , FromRow};
+use routes::{get_users, update_user};
+
 
 const AUTH_SYSTEM: &'static str = include_str!("./sql/auth-system.sql");
 const STRUCTURE_SQL: &'static str = include_str!("./sql/structure.sql");
 
-#[derive(FromRow, Debug, Serialize, Deserialize)]
-struct User {
-    id: i64,
-    handle: String
-}
-
+mod routes;
 
 async fn seed(pool: PgPool) -> Result<()> {
     let mut tx = pool.begin().await?;
@@ -37,36 +33,6 @@ async fn seed(pool: PgPool) -> Result<()> {
     Ok(())
 }
 
-macro_rules! set_session {
-    ($req_headers:ident, $tx: ident) => {
-
-        let val = $req_headers.get(HeaderName::from_static("user"));
-        match val {
-            Some(user_val) => {
-                let user_name = user_val.to_str().unwrap();
-                sqlx::query("set role to app_rls_user").execute(&mut $tx).await.unwrap();
-                sqlx::query("select set_config('rls.username', $1, true)").bind(user_name).execute(&mut $tx).await.unwrap();
-            },
-            None => {
-                sqlx::query("set role to app_rls_anonymous").execute(&mut $tx).await.unwrap();
-            }
-        }
-    }
-}
-
-async fn get_users(State(pool): State<PgPool>, req_headers: HeaderMap) -> (StatusCode, Json<Vec<User>>) {
-    let mut tx = pool.begin().await.unwrap();
-    set_session!(req_headers, tx);
-    let res= sqlx::query_as::<_,User>("select * from users").fetch_all(&mut tx).await;
-    match res {
-        Ok(users) => (StatusCode::OK, Json(users)),
-        Err(e) => {
-            tracing::error!("An error occured {}", e);
-            (StatusCode::INTERNAL_SERVER_ERROR, Json(vec!()))
-        }
-    }
-}
-
 #[tokio::main]
 async fn main() -> Result<()> {
     tracing_subscriber::fmt().init();
@@ -78,10 +44,10 @@ async fn main() -> Result<()> {
 
     let router = Router::new()
                   .route("/users", get(get_users))
+                  .route("/users/:user_id", post(update_user))
                   .with_state(pool.clone());
     let addr: SocketAddr = "0.0.0.0:3000".parse()?;
     Server::bind(&addr).serve(router.into_make_service()).await?;
 
-    // seed(pool.clone()).await?;
     Ok(())
 }

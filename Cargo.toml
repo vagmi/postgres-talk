@@ -31,7 +31,8 @@ path = "src/main.rs"
 [dependencies]
 anyhow = "1.0.69"
 async-trait = "0.1.64"
-axum = "0.6.7"
+axum = {version="0.6.7", features=["json"]}
+axum-macros = "0.3.4"
 chrono = {version="0.4.23", features=["clock", "serde"]}
 clap = "4.1.4"
 fake = {version="2.5.0", features=["derive", "chrono"]}

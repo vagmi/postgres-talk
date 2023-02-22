@@ -3,7 +3,8 @@ drop table if exists users;
 
 create table users (
     id bigserial primary key,
-    handle text not null unique
+    handle text not null unique,
+    email text
 );
 
 create table posts (
@@ -21,6 +22,7 @@ alter table users enable row level security;
 alter table posts  enable row level security;
 
 grant select, insert,update, delete on table users to app_rls_anonymous, app_rls_user, app_rls_admin;
+
 
 create policy select_current_user
 on users
@@ -40,6 +42,6 @@ to app_rls_admin using (true);
 create policy read_all_posts
 on users
 for select 
-to app_rls_anonymous using (true);
+to app_rls_admin using (true);
 
 
