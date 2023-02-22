@@ -21,6 +21,10 @@ name = "window_functions"
 path = "src/window_functions/main.rs"
 
 [[bin]]
+name = "rls"
+path = "src/rls/main.rs"
+
+[[bin]]
 name = "postgres-talk"
 path = "src/main.rs"
 
