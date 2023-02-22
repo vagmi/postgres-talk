@@ -5,6 +5,8 @@ of the awesome capabilities of PostgreSQL in real world scenarios.
 
 Ths repository is used as supplementary material to my ConFoo 2023 talk.
 
+We do this and more such awesome work at [Tarka Labs](https://tarkalabs.com/).
+
 ## Pivot Table
 
 This example uses the `tablefunc` extension with the crosstab method to cross
